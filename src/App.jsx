@@ -10,6 +10,8 @@ import { TodosLoading } from "./components/TodosLoading/TodosLoading";
 import { TodosError } from "./components/TodosError/TodosError";
 import { EmptyTodos } from "./components/EmptyTodos/EmptyTodos";
 import { TodoContext } from "./context/TodoContext";
+import { Modal } from "./components/Modal/Modal";
+import { TodoForm } from "./components/TodoForm/TodoForm";
 
 // const defaultTodos = [
 //   { text: "ads", completed: true },
@@ -18,8 +20,15 @@ import { TodoContext } from "./context/TodoContext";
 // ];
 
 function App() {
-  const { loading, error, searchedTodos, completeTodo, deleteTodo } =
-    useContext(TodoContext);
+  const {
+    loading,
+    error,
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+    openModal,
+    setOpenModal,
+  } = useContext(TodoContext);
 
   return (
     <div className="App">
@@ -47,7 +56,13 @@ function App() {
             ))
           : null}
       </TodoList>
-      <CreateTodoButton />
+      <CreateTodoButton setOpenModal={setOpenModal} />
+
+      {openModal ? (
+        <Modal>
+          <TodoForm />
+        </Modal>
+      ) : null}
     </div>
   );
 }
