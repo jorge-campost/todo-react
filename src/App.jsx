@@ -13,12 +13,6 @@ import { TodoContext } from "./context/TodoContext";
 import { Modal } from "./components/Modal/Modal";
 import { TodoForm } from "./components/TodoForm/TodoForm";
 
-// const defaultTodos = [
-//   { text: "ads", completed: true },
-//   { text: "123", completed: false },
-//   { text: "adadads", completed: false },
-// ];
-
 function App() {
   const {
     loading,
@@ -28,6 +22,7 @@ function App() {
     deleteTodo,
     openModal,
     setOpenModal,
+    totalTodos
   } = useContext(TodoContext);
 
   return (
@@ -43,7 +38,7 @@ function App() {
           </>
         ) : null}
         {error ? <TodosError /> : null}
-        {!loading && searchedTodos.length === 0 ? <EmptyTodos /> : null}
+        {!loading && totalTodos.length === 0 ? <EmptyTodos /> : null}
         {!loading && searchedTodos.length >= 1
           ? searchedTodos.map((todo) => (
               <TodoItem

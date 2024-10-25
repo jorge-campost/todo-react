@@ -18,8 +18,8 @@ function TodoProvider({ children }) {
     todo.text.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
   );
 
-  const completedTodos = searchedTodos.filter((todo) => todo.completed).length;
-  const totalTodos = searchedTodos.length;
+  const completedTodos = todos.filter((todo) => todo.completed).length;
+  const totalTodos = todos.length;
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
