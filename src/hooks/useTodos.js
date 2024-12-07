@@ -1,12 +1,10 @@
-import { createContext, useState } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useState } from "react";
 
-const TodoContext = createContext();
+import { useLocalStorage } from "./useLocalStorage";
 
-function TodoProvider({ children }) {
+function useTodos() {
   const [searchValue, setSearchValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
-
   const {
     item: todos,
     saveItem: saveTodos,
@@ -14,13 +12,12 @@ function TodoProvider({ children }) {
     loading,
     sincronizeItem: sincronizeTodos,
   } = useLocalStorage("TODOS_V1", []);
-
   const searchedTodos = todos.filter((todo) =>
     todo.text.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())
   );
 
-  const completedTodos = todos.filter((todo) => todo.completed).length;
-  const totalTodos = todos.length;
+  const completedTodos = searchedTodos.filter((todo) => todo.completed).length;
+  const totalTodos = searchedTodos.length;
 
   const completeTodo = (text) => {
     const newTodos = [...todos];
@@ -41,28 +38,22 @@ function TodoProvider({ children }) {
     newTodos.push({ text, completed: false });
     saveTodos(newTodos);
   };
-
-  return (
-    <TodoContext.Provider
-      value={{
-        loading,
-        error,
-        completedTodos,
-        totalTodos,
-        searchValue,
-        setSearchValue,
-        searchedTodos,
-        completeTodo,
-        deleteTodo,
-        openModal,
-        setOpenModal,
-        addTodo,
-        sincronizeTodos,
-      }}
-    >
-      {children}
-    </TodoContext.Provider>
-  );
+  
+  return {
+    loading,
+    error,
+    completedTodos,
+    totalTodos,
+    searchValue,
+    setSearchValue,
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+    openModal,
+    setOpenModal,
+    addTodo,
+    sincronizeTodos,
+  };
 }
 
-export { TodoContext, TodoProvider };
+export { useTodos };
